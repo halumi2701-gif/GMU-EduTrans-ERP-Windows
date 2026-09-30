@@ -3,29 +3,5 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="GMU EduTrans ERP">
-    <NavigationView x:Name="Nav"
-                    IsBackButtonVisible="Collapsed"
-                    IsSettingsVisible="True"
-                    PaneDisplayMode="Left"
-                    OpenPaneLength="252"
-                    SelectionChanged="Nav_SelectionChanged">
-        <NavigationView.PaneHeader>
-            <StackPanel Margin="4,12,4,18">
-                <TextBlock Text="GMU EduTrans" FontSize="21" FontWeight="SemiBold"/>
-                <TextBlock Text="ERP Desktop Native" Opacity="0.62"/>
-            </StackPanel>
-        </NavigationView.PaneHeader>
-        <NavigationView.MenuItems>
-            <NavigationViewItem Content="Dashboard" Tag="dashboard"/>
-            <NavigationViewItem Content="Booking" Tag="booking"/>
-            <NavigationViewItem Content="Program Edukasi" Tag="program"/>
-            <NavigationViewItem Content="Sales &amp; CRM" Tag="sales"/>
-            <NavigationViewItem Content="Operasional" Tag="operations"/>
-            <NavigationViewItem Content="Keuangan" Tag="finance"/>
-            <NavigationViewItem Content="SDM &amp; Payroll" Tag="hr"/>
-            <NavigationViewItem Content="Laporan" Tag="reports"/>
-            <NavigationViewItem Content="Master Data" Tag="master"/>
-        </NavigationView.MenuItems>
-        <Frame x:Name="ContentFrame"/>
-    </NavigationView>
+    <Grid x:Name="RootGrid"/>
 </Window>
