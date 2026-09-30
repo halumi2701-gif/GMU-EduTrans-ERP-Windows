@@ -1,0 +1,1 @@
+using Microsoft.UI.Xaml.Controls; namespace GMUEduTrans.Desktop.Views; public sealed partial class BookingPage : Page { public BookingPage() => InitializeComponent(); }
