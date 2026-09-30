@@ -3,6 +3,8 @@ using GMUEduTrans.Desktop.Models;
 using GMUEduTrans.Desktop.Services;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI;
 
 namespace GMUEduTrans.Desktop;
 
@@ -15,6 +17,14 @@ public sealed class MainWindow : Window
     private readonly TextBlock _status = new();
 
     private static readonly CultureInfo Id = CultureInfo.GetCultureInfo("id-ID");
+    private static readonly SolidColorBrush BrandGreen = new(Color.FromArgb(255, 28, 130, 2));
+    private static readonly SolidColorBrush BrandGreenDark = new(Color.FromArgb(255, 18, 82, 20));
+    private static readonly SolidColorBrush BrandGold = new(Color.FromArgb(255, 206, 150, 3));
+    private static readonly SolidColorBrush Surface = new(Color.FromArgb(255, 248, 249, 246));
+    private static readonly SolidColorBrush White = new(Color.FromArgb(255, 255, 255, 255));
+    private static readonly SolidColorBrush TextPrimary = new(Color.FromArgb(255, 28, 34, 30));
+    private static readonly SolidColorBrush TextMuted = new(Color.FromArgb(255, 98, 108, 101));
+    private static readonly SolidColorBrush BorderBrush = new(Color.FromArgb(255, 226, 231, 224));
 
     public MainWindow()
     {
@@ -26,27 +36,45 @@ public sealed class MainWindow : Window
 
     private UIElement BuildShell()
     {
-        var root = new Grid();
-        root.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(230) });
+        var root = new Grid { Background = Surface };
+        root.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(252) });
         root.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
-        var sidebar = new StackPanel { Margin = new Thickness(18, 24, 18, 18) };
-        sidebar.Children.Add(new TextBlock
+        var sidebarBorder = new Border
         {
-            Text = "GMU EduTrans",
-            FontSize = 24,
+            Background = BrandGreenDark,
+            Padding = new Thickness(16, 22, 16, 18)
+        };
+        var sidebar = new StackPanel { Spacing = 5 };
+
+        var brand = new StackPanel { Margin = new Thickness(6, 2, 6, 20) };
+        brand.Children.Add(new TextBlock
+        {
+            Text = "GMU",
+            Foreground = BrandGold,
+            FontSize = 34,
+            FontWeight = Microsoft.UI.Text.FontWeights.Bold
+        });
+        brand.Children.Add(new TextBlock
+        {
+            Text = "EduTrans",
+            Foreground = White,
+            FontSize = 22,
             FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
-            Margin = new Thickness(6, 0, 6, 2)
+            Margin = new Thickness(0, -6, 0, 0)
         });
-        sidebar.Children.Add(new TextBlock
+        brand.Children.Add(new TextBlock
         {
-            Text = "ERP Desktop Native",
-            Opacity = 0.65,
-            Margin = new Thickness(6, 0, 6, 20)
+            Text = "ERP DESKTOP",
+            Foreground = new SolidColorBrush(Color.FromArgb(190, 255, 255, 255)),
+            FontSize = 11,
+            CharacterSpacing = 140,
+            Margin = new Thickness(1, 5, 0, 0)
         });
+        sidebar.Children.Add(brand);
 
         AddNav(sidebar, "Dashboard", "dashboard", ShowDashboard);
-        AddNav(sidebar, "Booking", "booking", ShowBookings);
+        AddNav(sidebar, "Booking & Quotation", "booking", ShowBookings);
         AddNav(sidebar, "Program Edukasi", "program", ShowPrograms);
         AddNav(sidebar, "Sales & CRM", "sales", ShowSales);
         AddNav(sidebar, "Operasional", "operations", ShowOperations);
@@ -56,46 +84,76 @@ public sealed class MainWindow : Window
         AddNav(sidebar, "Master Data", "master", ShowMaster);
         AddNav(sidebar, "Pengaturan", "settings", ShowSettings);
 
-        sidebar.Children.Add(new TextBlock
+        var account = new Border
         {
-            Text = "Role: Owner",
-            Opacity = 0.6,
-            FontSize = 12,
-            Margin = new Thickness(6, 24, 6, 2)
-        });
-        sidebar.Children.Add(new TextBlock
+            Background = new SolidColorBrush(Color.FromArgb(28, 255, 255, 255)),
+            CornerRadius = new CornerRadius(10),
+            Padding = new Thickness(12, 10, 12, 10),
+            Margin = new Thickness(0, 18, 0, 0)
+        };
+        account.Child = new TextBlock
         {
-            Text = "Data tersimpan otomatis",
-            Opacity = 0.6,
+            Text = "OWNER / DIRECTOR\nGMU EduTrans",
+            Foreground = White,
             FontSize = 12,
-            Margin = new Thickness(6, 0, 6, 0)
-        });
+            LineHeight = 18
+        };
+        sidebar.Children.Add(account);
 
-        Grid.SetColumn(sidebar, 0);
-        root.Children.Add(sidebar);
+        sidebarBorder.Child = sidebar;
+        Grid.SetColumn(sidebarBorder, 0);
+        root.Children.Add(sidebarBorder);
 
-        var main = new Grid();
+        var main = new Grid { Background = Surface };
         main.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
         main.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
 
-        var header = new Grid { Margin = new Thickness(28, 22, 28, 12) };
+        var headerBorder = new Border
+        {
+            Background = White,
+            BorderBrush = BorderBrush,
+            BorderThickness = new Thickness(0, 0, 0, 1),
+            Padding = new Thickness(30, 20, 30, 17)
+        };
+        var header = new Grid();
         header.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
         header.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
 
+        var titleStack = new StackPanel { Spacing = 3 };
         _pageTitle.FontSize = 28;
         _pageTitle.FontWeight = Microsoft.UI.Text.FontWeights.SemiBold;
-        header.Children.Add(_pageTitle);
+        _pageTitle.Foreground = TextPrimary;
+        titleStack.Children.Add(_pageTitle);
+        titleStack.Children.Add(new TextBlock
+        {
+            Text = "PT. Garsyani Multi Usaha • GMU EduTrans",
+            Foreground = TextMuted,
+            FontSize = 12
+        });
+        header.Children.Add(titleStack);
 
+        var statusBorder = new Border
+        {
+            Background = new SolidColorBrush(Color.FromArgb(24, 28, 130, 2)),
+            BorderBrush = new SolidColorBrush(Color.FromArgb(70, 28, 130, 2)),
+            BorderThickness = new Thickness(1),
+            CornerRadius = new CornerRadius(18),
+            Padding = new Thickness(12, 6, 12, 6),
+            VerticalAlignment = VerticalAlignment.Center
+        };
         _status.Text = "Siap";
-        _status.Opacity = 0.65;
-        _status.VerticalAlignment = VerticalAlignment.Center;
-        Grid.SetColumn(_status, 1);
-        header.Children.Add(_status);
+        _status.Foreground = BrandGreenDark;
+        _status.FontSize = 12;
+        _status.FontWeight = Microsoft.UI.Text.FontWeights.SemiBold;
+        statusBorder.Child = _status;
+        Grid.SetColumn(statusBorder, 1);
+        header.Children.Add(statusBorder);
 
-        Grid.SetRow(header, 0);
-        main.Children.Add(header);
+        headerBorder.Child = header;
+        Grid.SetRow(headerBorder, 0);
+        main.Children.Add(headerBorder);
 
-        _body.Margin = new Thickness(28, 0, 28, 28);
+        _body.Margin = new Thickness(30, 24, 30, 30);
         Grid.SetRow(_body, 1);
         main.Children.Add(_body);
 
@@ -113,8 +171,12 @@ public sealed class MainWindow : Window
             Content = label,
             HorizontalAlignment = HorizontalAlignment.Stretch,
             HorizontalContentAlignment = HorizontalAlignment.Left,
-            Margin = new Thickness(0, 3, 0, 3),
-            Padding = new Thickness(12, 9, 12, 9)
+            Foreground = White,
+            Background = new SolidColorBrush(Color.FromArgb(0, 255, 255, 255)),
+            BorderThickness = new Thickness(0),
+            CornerRadius = new CornerRadius(8),
+            Margin = new Thickness(0, 2, 0, 2),
+            Padding = new Thickness(13, 10, 13, 10)
         };
         button.Click += (_, _) => action();
         panel.Children.Add(button);
@@ -165,7 +227,11 @@ public sealed class MainWindow : Window
         var b = new Button
         {
             Content = text,
-            Padding = new Thickness(16, 9, 16, 9),
+            Foreground = White,
+            Background = BrandGreen,
+            BorderBrush = BrandGreen,
+            CornerRadius = new CornerRadius(8),
+            Padding = new Thickness(18, 10, 18, 10),
             Margin = new Thickness(0, 8, 0, 4)
         };
         b.Click += handler;
@@ -187,10 +253,12 @@ public sealed class MainWindow : Window
         return new Border
         {
             Child = p,
-            Padding = new Thickness(14),
-            CornerRadius = new CornerRadius(10),
+            Background = White,
+            BorderBrush = BorderBrush,
+            Padding = new Thickness(16),
+            CornerRadius = new CornerRadius(12),
             BorderThickness = new Thickness(1),
-            Margin = new Thickness(0, 3, 0, 3)
+            Margin = new Thickness(0, 4, 0, 4)
         };
     }
 
