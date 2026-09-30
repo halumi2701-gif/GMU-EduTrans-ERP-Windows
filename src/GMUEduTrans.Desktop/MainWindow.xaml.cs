@@ -4,6 +4,7 @@ using GMUEduTrans.Desktop.Services;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI;
 
 namespace GMUEduTrans.Desktop;
@@ -48,28 +49,39 @@ public sealed class MainWindow : Window
         var sidebar = new StackPanel { Spacing = 5 };
 
         var brand = new StackPanel { Margin = new Thickness(6, 2, 6, 20) };
-        brand.Children.Add(new TextBlock
+        try
         {
-            Text = "GMU",
-            Foreground = BrandGold,
-            FontSize = 34,
-            FontWeight = Microsoft.UI.Text.FontWeights.Bold
-        });
-        brand.Children.Add(new TextBlock
+            var logoPath = Path.Combine(AppContext.BaseDirectory, "Assets", "GMU-EduTrans-Logo.png");
+            if (File.Exists(logoPath))
+            {
+                brand.Children.Add(new Image
+                {
+                    Source = new BitmapImage(new Uri(logoPath)),
+                    Width = 178,
+                    Height = 92,
+                    Stretch = Stretch.Uniform,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Margin = new Thickness(0, 0, 0, 4)
+                });
+            }
+        }
+        catch
         {
-            Text = "EduTrans",
-            Foreground = White,
-            FontSize = 22,
-            FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
-            Margin = new Thickness(0, -6, 0, 0)
-        });
+            brand.Children.Add(new TextBlock
+            {
+                Text = "GMU EduTrans",
+                Foreground = BrandGold,
+                FontSize = 24,
+                FontWeight = Microsoft.UI.Text.FontWeights.Bold
+            });
+        }
         brand.Children.Add(new TextBlock
         {
             Text = "ERP DESKTOP",
             Foreground = new SolidColorBrush(Color.FromArgb(190, 255, 255, 255)),
             FontSize = 11,
             CharacterSpacing = 140,
-            Margin = new Thickness(1, 5, 0, 0)
+            Margin = new Thickness(1, 4, 0, 0)
         });
         sidebar.Children.Add(brand);
 
