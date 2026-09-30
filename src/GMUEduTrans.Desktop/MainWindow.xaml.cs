@@ -3,39 +3,41 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace GMUEduTrans.Desktop;
 
-public sealed partial class MainWindow : Window
+public sealed class MainWindow : Window
 {
     public MainWindow()
     {
-        InitializeComponent();
+        Title = "GMU EduTrans ERP";
 
-        var title = new TextBlock
+        var root = new Grid();
+        var panel = new StackPanel
+        {
+            HorizontalAlignment = HorizontalAlignment.Left,
+            VerticalAlignment = VerticalAlignment.Top
+        };
+
+        panel.Children.Add(new TextBlock
         {
             Text = "GMU EduTrans ERP",
             FontSize = 28,
             FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
             Margin = new Thickness(32, 28, 32, 8)
-        };
-
-        var subtitle = new TextBlock
+        });
+        panel.Children.Add(new TextBlock
         {
             Text = "Desktop Native • Windows",
             FontSize = 15,
             Opacity = 0.65,
             Margin = new Thickness(32, 0, 32, 24)
-        };
-
-        var status = new TextBlock
+        });
+        panel.Children.Add(new TextBlock
         {
-            Text = "Aplikasi berhasil dijalankan. Modul ERP sedang dimuat.",
+            Text = "Aplikasi berhasil dijalankan.",
             FontSize = 16,
             Margin = new Thickness(32, 12, 32, 12)
-        };
+        });
 
-        var panel = new StackPanel();
-        panel.Children.Add(title);
-        panel.Children.Add(subtitle);
-        panel.Children.Add(status);
-        RootGrid.Children.Add(panel);
+        root.Children.Add(panel);
+        Content = root;
     }
 }
