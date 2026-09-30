@@ -234,22 +234,39 @@ public sealed class MainWindow : Window
         var pax = Box("Jumlah Peserta", placeholder: "20");
         var status = Combo("Status", "Draft", "Quotation", "Confirmed", "Selesai", "Batal");
         panel.Children.Add(date); panel.Children.Add(school); panel.Children.Add(program); panel.Children.Add(pax); panel.Children.Add(status);
-        panel.Children.Add(Primary("Simpan Booking", (_, _) =>
+        panel.Children.Add(Primary("Simpan Booking", async (_, _) =>
         {
             if (string.IsNullOrWhiteSpace(school.Text) || string.IsNullOrWhiteSpace(program.Text) || !int.TryParse(pax.Text, out var n) || n < 1)
             {
                 _status.Text = "Lengkapi customer, program, dan jumlah peserta.";
                 return;
             }
-            _state.Bookings.Add(new BookingRecord
+            var booking = new BookingRecord
             {
                 Date = date.Text.Trim(),
                 School = school.Text.Trim(),
                 Program = program.Text.Trim(),
                 Participants = n,
                 Status = status.SelectedItem?.ToString() ?? "Draft"
-            });
-            Persist("Booking tersimpan");
+            };
+            _state.Bookings.Add(booking);
+            Persist("Booking tersimpan • menyiapkan arsip Drive");
+
+            try
+            {
+                var drive = new DriveArchiveService();
+                var folder = await drive.EnsureOrderFolderAsync(
+                    "WIN-" + booking.Id,
+                    booking.School,
+                    booking.Date);
+                _status.Text = string.IsNullOrWhiteSpace(folder.FolderUrl)
+                    ? "Booking tersimpan • arsip Drive siap"
+                    : "Booking tersimpan • arsip Drive terhubung";
+            }
+            catch (Exception ex)
+            {
+                _status.Text = "Booking tersimpan • sinkronisasi Drive tertunda: " + ex.Message;
+            }
             ShowBookings();
         }));
 
