@@ -18,14 +18,14 @@ public sealed class MainWindow : Window
     private readonly TextBlock _status = new();
 
     private static readonly CultureInfo Id = CultureInfo.GetCultureInfo("id-ID");
-    private static readonly SolidColorBrush BrandGreen = new(Color.FromArgb(255, 28, 130, 2));
-    private static readonly SolidColorBrush BrandGreenDark = new(Color.FromArgb(255, 18, 82, 20));
-    private static readonly SolidColorBrush BrandGold = new(Color.FromArgb(255, 206, 150, 3));
-    private static readonly SolidColorBrush Surface = new(Color.FromArgb(255, 248, 249, 246));
-    private static readonly SolidColorBrush White = new(Color.FromArgb(255, 255, 255, 255));
-    private static readonly SolidColorBrush TextPrimary = new(Color.FromArgb(255, 28, 34, 30));
-    private static readonly SolidColorBrush TextMuted = new(Color.FromArgb(255, 98, 108, 101));
-    private static readonly SolidColorBrush BorderBrush = new(Color.FromArgb(255, 226, 231, 224));
+    private static readonly SolidColorBrush BrandGreen = new(ColorHelper.FromArgb(255, 28, 130, 2));
+    private static readonly SolidColorBrush BrandGreenDark = new(ColorHelper.FromArgb(255, 18, 82, 20));
+    private static readonly SolidColorBrush BrandGold = new(ColorHelper.FromArgb(255, 206, 150, 3));
+    private static readonly SolidColorBrush Surface = new(ColorHelper.FromArgb(255, 248, 249, 246));
+    private static readonly SolidColorBrush White = new(ColorHelper.FromArgb(255, 255, 255, 255));
+    private static readonly SolidColorBrush TextPrimary = new(ColorHelper.FromArgb(255, 28, 34, 30));
+    private static readonly SolidColorBrush TextMuted = new(ColorHelper.FromArgb(255, 98, 108, 101));
+    private static readonly SolidColorBrush BorderBrush = new(ColorHelper.FromArgb(255, 226, 231, 224));
 
     public MainWindow()
     {
@@ -78,7 +78,7 @@ public sealed class MainWindow : Window
         brand.Children.Add(new TextBlock
         {
             Text = "ERP DESKTOP",
-            Foreground = new SolidColorBrush(Color.FromArgb(190, 255, 255, 255)),
+            Foreground = new SolidColorBrush(ColorHelper.FromArgb(190, 255, 255, 255)),
             FontSize = 11,
             CharacterSpacing = 140,
             Margin = new Thickness(1, 4, 0, 0)
@@ -98,7 +98,7 @@ public sealed class MainWindow : Window
 
         var account = new Border
         {
-            Background = new SolidColorBrush(Color.FromArgb(28, 255, 255, 255)),
+            Background = new SolidColorBrush(ColorHelper.FromArgb(28, 255, 255, 255)),
             CornerRadius = new CornerRadius(10),
             Padding = new Thickness(12, 10, 12, 10),
             Margin = new Thickness(0, 18, 0, 0)
@@ -146,8 +146,8 @@ public sealed class MainWindow : Window
 
         var statusBorder = new Border
         {
-            Background = new SolidColorBrush(Color.FromArgb(24, 28, 130, 2)),
-            BorderBrush = new SolidColorBrush(Color.FromArgb(70, 28, 130, 2)),
+            Background = new SolidColorBrush(ColorHelper.FromArgb(24, 28, 130, 2)),
+            BorderBrush = new SolidColorBrush(ColorHelper.FromArgb(70, 28, 130, 2)),
             BorderThickness = new Thickness(1),
             CornerRadius = new CornerRadius(18),
             Padding = new Thickness(12, 6, 12, 6),
@@ -184,7 +184,7 @@ public sealed class MainWindow : Window
             HorizontalAlignment = HorizontalAlignment.Stretch,
             HorizontalContentAlignment = HorizontalAlignment.Left,
             Foreground = White,
-            Background = new SolidColorBrush(Color.FromArgb(0, 255, 255, 255)),
+            Background = new SolidColorBrush(ColorHelper.FromArgb(0, 255, 255, 255)),
             BorderThickness = new Thickness(0),
             CornerRadius = new CornerRadius(8),
             Margin = new Thickness(0, 2, 0, 2),
