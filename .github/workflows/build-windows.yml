@@ -11,29 +11,31 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
-
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
-
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v2
-
       - name: Restore
         shell: pwsh
         run: nuget restore src/GMUEduTrans.Desktop/GMUEduTrans.Desktop.csproj -PackagesDirectory packages
-
       - name: Publish native desktop
         shell: pwsh
         run: msbuild src/GMUEduTrans.Desktop/GMUEduTrans.Desktop.csproj /restore /t:Publish /p:Configuration=Release /p:Platform=x64 /p:RuntimeIdentifier=win-x64 /p:SelfContained=true /p:PublishDir="$env:GITHUB_WORKSPACE\publish\"
-
+      - name: Verify published executable
+        shell: pwsh
+        run: |
+          $exe = Join-Path $env:GITHUB_WORKSPACE "publish\GMUEduTrans.Desktop.exe"
+          if (!(Test-Path $exe)) { throw "Published EXE not found" }
+          $p = Start-Process -FilePath $exe -PassThru
+          Start-Sleep -Seconds 8
+          if ($p.HasExited) { throw "Application exited during startup. ExitCode=$($p.ExitCode)" }
+          Stop-Process -Id $p.Id -Force
       - name: Install Inno Setup
         shell: pwsh
         run: choco install innosetup -y --no-progress
-
       - name: Build Setup.exe
         shell: pwsh
         run: iscc installer/GMUEduTrans.iss
-
       - name: Upload installer
         uses: actions/upload-artifact@v4
         with:
