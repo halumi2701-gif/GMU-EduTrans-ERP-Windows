@@ -1,5 +1,3 @@
-using GMUEduTrans.Desktop.Services;
-using GMUEduTrans.Desktop.Views;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
@@ -10,49 +8,34 @@ public sealed partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        Nav.SelectedItem = Nav.MenuItems[0];
-        ContentFrame.Navigate(typeof(DashboardPage));
-        ApplyRoleVisibility();
-    }
 
-    private void ApplyRoleVisibility()
-    {
-        foreach (var raw in Nav.MenuItems)
-            if (raw is NavigationViewItem item && item.Tag is string tag)
-                item.Visibility = RoleAccessService.CanAccess(SessionService.Current.Role, tag)
-                    ? Visibility.Visible : Visibility.Collapsed;
-    }
-
-    private void Nav_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
-    {
-        if (args.IsSettingsSelected)
+        var title = new TextBlock
         {
-            if (RoleAccessService.CanAccess(SessionService.Current.Role, "settings"))
-                Navigate(typeof(ModulePage), "Pengaturan");
-            return;
-        }
+            Text = "GMU EduTrans ERP",
+            FontSize = 28,
+            FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
+            Margin = new Thickness(32, 28, 32, 8)
+        };
 
-        if (args.SelectedItemContainer is not NavigationViewItem item) return;
-        var tag = item.Tag?.ToString() ?? "";
-        if (!RoleAccessService.CanAccess(SessionService.Current.Role, tag)) return;
-
-        switch (tag)
+        var subtitle = new TextBlock
         {
-            case "dashboard": Navigate(typeof(DashboardPage)); break;
-            case "booking": Navigate(typeof(BookingPage)); break;
-            case "sales": Navigate(typeof(SalesPage)); break;
-            case "operations": Navigate(typeof(OperationsPage)); break;
-            case "finance": Navigate(typeof(FinancePage)); break;
-            case "hr": Navigate(typeof(HrPage)); break;
-            case "reports": Navigate(typeof(ReportsPage)); break;
-            default: Navigate(typeof(ModulePage), item.Content?.ToString()); break;
-        }
-    }
+            Text = "Desktop Native • Windows",
+            FontSize = 15,
+            Opacity = 0.65,
+            Margin = new Thickness(32, 0, 32, 24)
+        };
 
-    private void Navigate(Type pageType, string? title = null)
-    {
-        if (ContentFrame.CurrentSourcePageType == pageType && pageType != typeof(ModulePage)) return;
-        ContentFrame.Navigate(pageType);
-        if (title is not null && ContentFrame.Content is ModulePage page) page.Tag = title;
+        var status = new TextBlock
+        {
+            Text = "Aplikasi berhasil dijalankan. Modul ERP sedang dimuat.",
+            FontSize = 16,
+            Margin = new Thickness(32, 12, 32, 12)
+        };
+
+        var panel = new StackPanel();
+        panel.Children.Add(title);
+        panel.Children.Add(subtitle);
+        panel.Children.Add(status);
+        RootGrid.Children.Add(panel);
     }
 }
