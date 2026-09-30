@@ -1,0 +1,57 @@
+<Window
+    x:Class="GMUEduTrans.Desktop.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="GMU EduTrans ERP">
+    <Grid>
+        <NavigationView x:Name="Nav" IsBackButtonVisible="Collapsed" IsSettingsVisible="True"
+                        PaneDisplayMode="Left" OpenPaneLength="248" SelectionChanged="Nav_SelectionChanged">
+            <NavigationView.PaneHeader>
+                <StackPanel Margin="4,12,4,16">
+                    <TextBlock Text="GMU EduTrans" FontSize="20" FontWeight="SemiBold"/>
+                    <TextBlock Text="ERP Desktop" Opacity=".65"/>
+                </StackPanel>
+            </NavigationView.PaneHeader>
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="Dashboard" Tag="dashboard" Icon="Home"/>
+                <NavigationViewItem Content="Booking" Tag="booking" Icon="Calendar"/>
+                <NavigationViewItem Content="Sales CRM" Tag="sales" Icon="People"/>
+                <NavigationViewItem Content="Program" Tag="program" Icon="Library"/>
+                <NavigationViewItem Content="Operasional" Tag="operations" Icon="Map"/>
+                <NavigationViewItem Content="Keuangan" Tag="finance" Icon="Shop"/>
+                <NavigationViewItem Content="SDM & Payroll" Tag="hr" Icon="Contact"/>
+                <NavigationViewItem Content="Laporan" Tag="reports" Icon="Document"/>
+            </NavigationView.MenuItems>
+            <ScrollViewer>
+                <Grid Padding="32" RowSpacing="20">
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                    <StackPanel>
+                        <TextBlock Text="Dashboard Owner" FontSize="28" FontWeight="SemiBold"/>
+                        <TextBlock Text="Ringkasan GMU EduTrans hari ini" Opacity=".65" Margin="0,6,0,0"/>
+                    </StackPanel>
+                    <Grid Grid.Row="1" ColumnSpacing="14">
+                        <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                        <Border Padding="18" CornerRadius="{StaticResource CardCornerRadius}" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+                            <StackPanel><TextBlock Text="Target Pax" Opacity=".65"/><TextBlock Text="400" FontSize="28" FontWeight="SemiBold"/></StackPanel>
+                        </Border>
+                        <Border Grid.Column="1" Padding="18" CornerRadius="{StaticResource CardCornerRadius}" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+                            <StackPanel><TextBlock Text="Booking Aktif" Opacity=".65"/><TextBlock Text="—" FontSize="28" FontWeight="SemiBold"/></StackPanel>
+                        </Border>
+                        <Border Grid.Column="2" Padding="18" CornerRadius="{StaticResource CardCornerRadius}" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+                            <StackPanel><TextBlock Text="Kas" Opacity=".65"/><TextBlock Text="—" FontSize="28" FontWeight="SemiBold"/></StackPanel>
+                        </Border>
+                        <Border Grid.Column="3" Padding="18" CornerRadius="{StaticResource CardCornerRadius}" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+                            <StackPanel><TextBlock Text="Kewajiban" Opacity=".65"/><TextBlock Text="—" FontSize="28" FontWeight="SemiBold"/></StackPanel>
+                        </Border>
+                    </Grid>
+                    <Border Grid.Row="2" Padding="20" CornerRadius="{StaticResource CardCornerRadius}" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="Pusat Aktivitas" FontSize="18" FontWeight="SemiBold"/>
+                            <TextBlock Text="Fondasi native desktop aktif. Data produksi akan dihubungkan melalui service/API layer, bukan WebView." TextWrapping="Wrap" Opacity=".7"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </ScrollViewer>
+        </NavigationView>
+    </Grid>
+</Window>
