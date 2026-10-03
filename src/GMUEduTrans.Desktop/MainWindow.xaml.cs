@@ -280,6 +280,23 @@ public sealed class MainWindow : Window
         _status.Text = message;
     }
 
+    private void OpenExternal(string url, string label)
+    {
+        try
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true
+            });
+            _status.Text = $"Membuka {label}";
+        }
+        catch (Exception ex)
+        {
+            _status.Text = $"Gagal membuka {label}: {ex.Message}";
+        }
+    }
+
     private void ShowDashboard()
     {
         var panel = PageStack();
@@ -381,7 +398,22 @@ public sealed class MainWindow : Window
     private void ShowSales()
     {
         var panel = PageStack();
-        panel.Children.Add(new TextBlock { Text = "Tambah Lead", FontSize = 20, FontWeight = Microsoft.UI.Text.FontWeights.SemiBold });
+
+        panel.Children.Add(new TextBlock { Text = "Sales & Marketing Kit", FontSize = 20, FontWeight = Microsoft.UI.Text.FontWeights.SemiBold });
+        panel.Children.Add(new TextBlock
+        {
+            Text = "Materi resmi Sales terhubung ke Google Drive. Gunakan versi aktif dari folder ini agar price list, proposal, script, dan tracker tidak tertukar.",
+            TextWrapping = TextWrapping.Wrap,
+            Opacity = 0.72
+        });
+        panel.Children.Add(Primary("Buka Sales & Marketing Kit (Drive)", (_, _) =>
+            OpenExternal("https://drive.google.com/drive/folders/1jsRE7kCj_Vg6ph3tqKzCCODqxJoYxF2q", "Sales & Marketing Kit")));
+        panel.Children.Add(Primary("Buka README / Master Index", (_, _) =>
+            OpenExternal("https://docs.google.com/document/d/1Be9zi1US4aZu-vBgkZ3m-_bvXswBiiHyp8HfaGuDZnI/edit", "Master Index Sales Kit")));
+        panel.Children.Add(Primary("Buka Lead & KPI Tracker", (_, _) =>
+            OpenExternal("https://docs.google.com/spreadsheets/d/1RfBl_PZDFaKb1-q0fEpOoyQgEafIqf07/edit", "Lead & KPI Tracker")));
+
+        panel.Children.Add(new TextBlock { Text = "Tambah Lead", FontSize = 20, FontWeight = Microsoft.UI.Text.FontWeights.SemiBold, Margin = new Thickness(0, 14, 0, 0) });
         var school = Box("Sekolah / Lembaga");
         var contact = Box("Kontak");
         var stage = Combo("Tahap", "Prospek", "Follow Up", "Quotation", "Negosiasi", "Closing", "Lost");
@@ -582,6 +614,26 @@ public sealed class MainWindow : Window
         panel.Children.Add(Card("Backend ERP", string.IsNullOrWhiteSpace(api)
             ? "Belum dikonfigurasi. Aplikasi berjalan mandiri dengan penyimpanan lokal."
             : $"API base terkonfigurasi: {api}"));
+        panel.Children.Add(Card("Sales & Marketing Kit", "Google Drive terhubung • Master folder dan tracker aktif"));
+        panel.Children.Add(Primary("Buka Sales & Marketing Kit", (_, _) =>
+            OpenExternal("https://drive.google.com/drive/folders/1jsRE7kCj_Vg6ph3tqKzCCODqxJoYxF2q", "Sales & Marketing Kit")));
+        if (SessionService.Current.Role == UserRole.Owner)
+        {
+            panel.Children.Add(Primary("Tes Sinkronisasi Drive", async (_, _) =>
+            {
+                _status.Text = "Menguji sinkronisasi Drive...";
+                try
+                {
+                    var drive = new DriveArchiveService();
+                    var ok = await drive.HealthAsync();
+                    _status.Text = ok ? "Sinkronisasi Drive: OK" : "Sinkronisasi Drive: respons tidak valid";
+                }
+                catch (Exception ex)
+                {
+                    _status.Text = "Sinkronisasi Drive gagal: " + ex.Message;
+                }
+            }));
+        }
         panel.Children.Add(Card("Mode Aplikasi", "WinUI 3 native • x64 • self-contained • startup smoke-tested"));
         SetPage("Pengaturan", Scroll(panel));
     }
